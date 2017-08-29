@@ -1,7 +1,6 @@
 
 #include <gtk/gtk.h>
 #include <time.h>
-//#include <curses.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -33,7 +32,6 @@ GtkTextBuffer *buffer1;
 GtkTextBuffer *buffer2;
 GtkTextBuffer *buffer3;
 GtkTextBuffer *buffer4;
-//char command[1000];
 
 int open_client_socket(char * host, int port) {
 	// Initialize socket address structure
@@ -121,9 +119,6 @@ printUsage()
 	exit(1);
 }
 
-//------------------GTK FUNCTIONS------------------------------
-
-
 static gboolean delete_event( GtkWidget *widget,
                               GdkEvent  *event,
                               gpointer   data )
@@ -139,8 +134,6 @@ static void destroy( GtkWidget *widget,
     gtk_main_quit ();
 }
 
-
-//--------------PANNED Methods------------------------
 static GtkWidget *create_list1( void )
 {
 
@@ -189,7 +182,6 @@ static GtkWidget *create_list1( void )
 }
 
 
-//----------ENTRY Functions (Built In)-------------------
 static void enter_callback( GtkWidget *widget,
                             GtkWidget *entry )
 {
@@ -211,14 +203,6 @@ static void entry_toggle_visibility( GtkWidget *checkbutton,
   gtk_entry_set_visibility (GTK_ENTRY (entry),
 			    GTK_TOGGLE_BUTTON (checkbutton)->active);
 }
-
-
-//----------------------------------------------
-   
-/* Add some text to our text widget - this is a callback that is invoked
-when our window is realized. We could also force our window to be
-realized with gtk_widget_realize, but it would have to be part of
-a hierarchy first */
 
 static void insert_text1( char * str )
 {
@@ -329,7 +313,6 @@ static GtkWidget *create_text4( void )
    GtkWidget *scrolled_window;
    GtkWidget *view;
    
-
    view = gtk_text_view_new ();
    buffer4 = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
 
@@ -339,15 +322,11 @@ static GtkWidget *create_text4( void )
 				   GTK_POLICY_AUTOMATIC);
 
    gtk_container_add (GTK_CONTAINER (scrolled_window), view);
-   //insert_text4 (buffer4);
 
    gtk_widget_show_all (scrolled_window);
 
    return scrolled_window;
 }
-
-
-//-------------CUSTOM Send to server functions-----------
 
 static void send_message( GtkWidget *widget,
                             GtkWidget *entry ){
@@ -661,14 +640,6 @@ static void blacklist( GtkWidget *widget,
 						sprintf(command,"Profanity Filter:%s\n",status);
 						insert_text2(command);
 				   }
-				   
-		
-
-				   
-				   
-//--------------CUSTOM Window functions-------------------
-
-
 
 static void create_room_window( GtkWidget *widget,
                    gpointer   data ){
@@ -1152,29 +1123,17 @@ update_messages(GtkWidget *widget)
   }
   return TRUE;
 }
-//--------------------------MAIN METHOD-----------------------
 
-int
-main(int argc, char **argv) {
-
-	
+int main(int argc, char **argv) {
 	if (argc < 3) {
 		printUsage();
 	}
 
 	host = argv[1];
 	sport = argv[2];
-	//command = argv[3];
 
 	sscanf(sport, "%d", &port);
 	
-	
-	
-	
-	//-------------------GTK METHODS--------------------------
-	
-	
-	/* GtkWidget is the storage type for widgets */
     GtkWidget *window;
     GtkWidget *button_send;
 	GtkWidget *button_new_room;
@@ -1204,9 +1163,7 @@ main(int argc, char **argv) {
 	GtkWidget *text4;
 	GtkWidget *label1;
 	GtkWidget *label2;
-	
 
-	
     GtkWidget *separator;
     GtkWidget *label;
     
@@ -1264,29 +1221,18 @@ main(int argc, char **argv) {
     gtk_paned_add2 (GTK_PANED (hpaned), text4);
 	
 	//ADD to vpand PANEL
-	
 	text = create_text1 ();
     gtk_paned_add1 (GTK_PANED (vpaned), text);
    
     text2 = create_text2 ();
     gtk_paned_add2 (GTK_PANED (vpaned), text2);
-	
-	
-
 
 	//Create LABELS
 	label1 = gtk_label_new("Rooms");
 	label2 = gtk_label_new("Users In Room");
-   
-
 	
     //Set the Widget sizes
 	gtk_widget_set_size_request (GTK_WIDGET (window), 600, 650);
-	
-	
-    /* When the button receives the "clicked" signal, it will call the
-     * function hello() passing it NULL as its argument.  The hello()
-     * function is defined above. */
 
     g_signal_connect (button_send, "clicked",
 		      G_CALLBACK (send_message_window), NULL);
@@ -1330,7 +1276,6 @@ main(int argc, char **argv) {
 	g_signal_connect (button_clear, "clicked",
 		      G_CALLBACK (clear), NULL);
 	
-
     
     /* This will cause the window to be destroyed by calling
      * gtk_widget_destroy(window) when "clicked".  Again, the destroy
@@ -1338,10 +1283,8 @@ main(int argc, char **argv) {
     g_signal_connect_swapped (button_exit, "clicked",
 			      G_CALLBACK (gtk_widget_destroy),
                               window);
-							  
-							 
-	
-	//-------------BOXES------------------------
+
+	//Define boxes
 	vert = gtk_vbox_new (FALSE, 0);
 	horiz1 = gtk_hbox_new (FALSE, 0);
 	horiz2 = gtk_hbox_new (FALSE, 0);
@@ -1374,7 +1317,7 @@ main(int argc, char **argv) {
 
 	gtk_container_add (GTK_CONTAINER (window), vert);
     
-    /* The final step is to display the widgets. */
+    // Display widgets
 	gtk_widget_show (vert);
 	gtk_widget_show (horiz1);
 	gtk_widget_show (horiz2);
@@ -1404,14 +1347,11 @@ main(int argc, char **argv) {
 	gtk_widget_show (text3);
 	gtk_widget_show (text4);
 	
-    
-    /* All GTK applications must have a gtk_main(). Control ends here
-     * and waits for an event to occur (like a key press or
-     * mouse event). */
 	 lastMessage = 0;
 	 blockCount=0;
 	 filterToggle = FALSE;
-	 //Profanity filter automatically flagged words
+
+	 //Profanity filter pre-defined strings
 	 strcpy(filterlist[0],"cat");
 	 strcpy(filterlist[2],"hell");
 	 strcpy(filterlist[3],"damn");
@@ -1420,14 +1360,9 @@ main(int argc, char **argv) {
 	 strcpy(filterlist[6],"bitch");
 	 strcpy(filterlist[7],"ass");
 	 filterCount = 8;
-	 //----------------------------
 	 
 	g_timeout_add(5000, (GSourceFunc) update_messages, (gpointer) window);
-	 
     gtk_main ();
-	
-
 	return 0;
 }
 
-//
